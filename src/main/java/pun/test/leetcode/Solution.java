@@ -151,11 +151,71 @@ public class Solution {
         }
     }
 
+	public class Context {
+		int sum;
+	}
+
+	
+	// version1 - recurse 
+	// 284ms
     public int sumNumbers(TreeNode root) {
-        TreeNode n = null;
-
-
-
-        //return
+        if (root == null) {
+			return 0;
+		}
+		
+		Context c = new Context();
+		recurseWalk(root, c, 0);
+		
+		return c.sum;
+    }
+	
+	private void recurseWalk(TreeNode n, Context c, int pval) {
+		if (n.left == null && n.right == null) {
+			c.sum += pval + n.val;
+			return;
+		}
+		
+		pval = (n.val + pval) * 10;
+		if (n.left != null) {
+			recurseWalk(n.left, c, pval);
+		}
+		
+		if (n.right != null) {
+			recurseWalk(n.right, c, pval);
+		}
+	}
+	
+	// version2 - iterate
+	// 300ms
+	 public int sumNumbers2(TreeNode root) {
+        if (root == null) {
+			return 0;
+		}
+		
+		// iterate
+		LinkedList<TreeNode> stack = new LinkedList<TreeNode>();
+		stack.push(root);
+		
+		int sum = 0;
+		while (!stack.isEmpty()) {
+			TreeNode n = stack.pop();
+			
+			if (n.left == null && n.right == null) {
+				sum += n.val;
+				continue;
+			}
+			
+			if (n.left != null) {
+				n.left.val += n.val * 10;
+				stack.push(n.left);
+			}
+			
+			if (n.right != null) {
+				n.right.val += n.val * 10;
+				stack.push(n.right);
+			}
+		}
+		
+		return sum;
     }
 }
