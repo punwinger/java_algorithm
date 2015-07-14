@@ -273,91 +273,25 @@ public class Solution {
 
     /////////////////////////////////////////////////////////////////////////////////////
     // Gas Station
-    // Time Limit Exceeded...
-    public int canCompleteCircuit(int[] gas, int[] cost) {
-        for(int i = 0; i < gas.length; ++i) {
-            int gasCount = 0;
-            int pos = i;
-            int j = 0;
-            for (; j < cost.length; ++j) {
-                pos = (i + j) % cost.length;
-                gasCount += gas[pos] - cost[pos];
-                if (gasCount < 0)
-                    break;
-            }
-
-            if (j == cost.length) {
-                return i;
-            }
-        }
-
-
-        return -1;
-    }
-
-    //time exceed again...
-    public static int canCompleteCircuit2(int[] gas, int[] cost) {
-        int[] tmp = new int[gas.length];
-        boolean hasPositive = false;
-        boolean hasNegative = false;
-
-        for (int i = 0; i < gas.length; ++i) {
-            tmp[i] = gas[i] - cost[i];
-            if (tmp[i] > 0) {
-                hasPositive = true;
-            } else if (tmp[i] < 0) {
-                hasNegative = true;
-            }
-        }
-
-        if (!hasPositive || !hasNegative) {
-            return -1;
-        }
-
-
-        for(int i = 0; i < gas.length; ++i) {
-            int gasCount = 0;
-            int pos = i;
-            int j = 0;
-            if (tmp[i] <= 0) continue;
-
-            for (; j < gas.length; ++j) {
-                pos = (i + j) % cost.length;
-                gasCount += tmp[pos];
-                if (gasCount < 0)
-                    break;
-            }
-            if (j == cost.length) {
-                return i;
-            }
-        }
-
-
-        return -1;
-    }
-
-    public static int canCompleteCircuit3(int[] gas, int[] cost) {
+    // Greedy
+    public static int canCompleteCircuit(int[] gas, int[] cost) {
         int len = gas.length;
-        int tmp[] = new int[len];
-
-        int last = 0;
-        for (int i = len - 1; i >= last ; i++) {
-            tmp[i] = gas[i] - cost[i];
-
-            if (tmp[i] >= 0) {
-                int j = 0;
-                int pos = i + 1;
-                while (pos < ) {
-
-                }
-
+        int start = 1, stop = len - 1;
+        int gasCount = gas[0] - cost[0];
+        while (start <= stop) {
+            if (gasCount >= 0) {
+                gasCount += gas[start] - cost[start];
+                start++;
+            } else {
+                gasCount += gas[stop] - cost[stop];
+                stop--;
             }
-
-
         }
 
-
+        if (gasCount < 0) {
+            return -1;
+        } else {
+            return start % len;
+        }
     }
-
-
 }
