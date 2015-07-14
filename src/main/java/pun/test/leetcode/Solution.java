@@ -219,4 +219,145 @@ public class Solution {
 		
 		return sum;
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    // TODO Divide and conquer Binary Search
+    //There are two sorted arrays nums1 and nums2 of size m and n respectively.
+    // Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
+
+    //616ms
+    public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int index = (nums1.length + nums2.length) >>> 1;
+        boolean needAvg = ((nums1.length + nums2.length) & 0x01) == 0;
+
+        int r1 = 0, r2 = 0, i1 = 0, i2 = 0, n1 = 0, n2 = 0;
+
+        if (nums1.length > 0) {
+            n1 = nums1[i1++];
+        } else {
+            n1 = Integer.MAX_VALUE;
+        }
+
+        if (nums2.length > 0) {
+            n2 = nums2[i2++];
+        } else {
+            n2 = Integer.MAX_VALUE;
+        }
+
+        // combine two sorted array
+        for (int i = 0; i <= index; ++i) {
+            if (n1 > n2) {
+                r1 = n2;
+                if (i2 < nums2.length) {
+                    n2 = nums2[i2++];
+                } else {
+                    n2 = Integer.MAX_VALUE;
+                }
+            } else {
+                r1 = n1;
+                if (i1 < nums1.length) {
+                    n1 = nums1[i1++];
+                } else {
+                    n1 = Integer.MAX_VALUE;
+                }
+            }
+
+            if (needAvg && i == index - 1) {
+                r2 = r1;
+            }
+        }
+
+        return  needAvg ? ((double)(r1 + r2)) / 2 : r1;
+    }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    // Gas Station
+    // Time Limit Exceeded...
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        for(int i = 0; i < gas.length; ++i) {
+            int gasCount = 0;
+            int pos = i;
+            int j = 0;
+            for (; j < cost.length; ++j) {
+                pos = (i + j) % cost.length;
+                gasCount += gas[pos] - cost[pos];
+                if (gasCount < 0)
+                    break;
+            }
+
+            if (j == cost.length) {
+                return i;
+            }
+        }
+
+
+        return -1;
+    }
+
+    //time exceed again...
+    public static int canCompleteCircuit2(int[] gas, int[] cost) {
+        int[] tmp = new int[gas.length];
+        boolean hasPositive = false;
+        boolean hasNegative = false;
+
+        for (int i = 0; i < gas.length; ++i) {
+            tmp[i] = gas[i] - cost[i];
+            if (tmp[i] > 0) {
+                hasPositive = true;
+            } else if (tmp[i] < 0) {
+                hasNegative = true;
+            }
+        }
+
+        if (!hasPositive || !hasNegative) {
+            return -1;
+        }
+
+
+        for(int i = 0; i < gas.length; ++i) {
+            int gasCount = 0;
+            int pos = i;
+            int j = 0;
+            if (tmp[i] <= 0) continue;
+
+            for (; j < gas.length; ++j) {
+                pos = (i + j) % cost.length;
+                gasCount += tmp[pos];
+                if (gasCount < 0)
+                    break;
+            }
+            if (j == cost.length) {
+                return i;
+            }
+        }
+
+
+        return -1;
+    }
+
+    public static int canCompleteCircuit3(int[] gas, int[] cost) {
+        int len = gas.length;
+        int tmp[] = new int[len];
+
+        int last = 0;
+        for (int i = len - 1; i >= last ; i++) {
+            tmp[i] = gas[i] - cost[i];
+
+            if (tmp[i] >= 0) {
+                int j = 0;
+                int pos = i + 1;
+                while (pos < ) {
+
+                }
+
+            }
+
+
+        }
+
+
+    }
+
+
 }
