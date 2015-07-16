@@ -1,8 +1,7 @@
 package pun.test.leetcode;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * Created by yongjianpun on 15/6/30.
@@ -294,4 +293,51 @@ public class Solution {
             return start % len;
         }
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    // Anagrams
+
+    // 416 ms
+    private static class ArrayKey {
+        int[] array = new int[26];
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(array);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return Arrays.equals(array, ((ArrayKey)obj).array);
+        }
+    }
+
+    public List<String> anagrams(String[] strs) {
+        HashMap<ArrayKey, Integer> hashMap = new HashMap<ArrayKey, Integer>();
+        List<String> res = new ArrayList<String>(strs.length);
+
+        for (int i = 0; i < strs.length; i++) {
+            String s = strs[i];
+            ArrayKey key = new ArrayKey();
+            for (int j = 0; j < s.length(); j++) {
+                (key.array[s.charAt(j) - 'a'])++;
+            }
+
+            Integer prev = hashMap.put(key, i);
+            if (prev != null) {
+                if (strs[prev] != null) {
+                    res.add(strs[prev]);
+                    strs[prev] = null;
+                }
+
+                if (strs[i] != null) {
+                    res.add(strs[i]);
+                    strs[i] = null;
+                }
+            }
+        }
+
+        return res;
+    }
+
 }
