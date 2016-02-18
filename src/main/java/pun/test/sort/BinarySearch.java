@@ -11,6 +11,52 @@ import java.util.Arrays;
  */
 public class BinarySearch {
 
+    // Binary Search算法
+    // Arrays.binarySearch()的实现，如果找到num，返回对应index，否则返回-(l + 1)，必为负数
+    // l的范围[0, array.length - 1]，所以必须+1才能使范围必定为负数，l的值就是要插入的位置。
+    // 稍作修改就可以找到第一个小于num或者第一个大于num的索引
+    public static int binarySearch(int[] array, int num) {
+        int l = 0, r = array.length - 1;
+        while (l <= r) {
+            int mid = (l + r) >>> 1;
+            if (array[mid] == num) {
+                return mid;
+            } else if (array[mid] > num) {
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+
+        return l;
+        //return -(l + 1);
+
+        // 另外有binarySearch2的略微改动版本, r的初始化大了1，避免单个元素出错。
+        // 注意由于mid的范围[l, r)，因此出现array[mid] < num的时候，l必须+1，否则可能出现死循环
+        // 同理，r可以直接取mid的值
+        // 稍作修改，可以使r取得刚好大于num的索引，l可以取得第一个等于num的索引
+        // 较第一种稍微麻烦。
+//        int l = 0, r = array.length;
+//        while (l < r) {
+//            int mid = (l + r) >>> 1;
+//            if (array[mid] == num) {
+//                return mid;
+//            } else if (array[mid] > num) {
+//                r = mid;
+//            } else {
+//                l = mid + 1;
+//            }
+//
+////            if (array[mid] > num || (!bigger && array[mid] == num)) {
+////                r = mid;
+////            } else {
+////                l = mid + 1;
+////            }
+//        }
+//
+//        return -(l + 1);
+    }
+
     //在含有正负数的排序数组中查找绝对值最小的数
     @Algorithm
     public static void sortArraySearch() {
