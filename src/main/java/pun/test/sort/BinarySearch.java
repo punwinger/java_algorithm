@@ -28,8 +28,7 @@ public class BinarySearch {
             }
         }
 
-        return l;
-        //return -(l + 1);
+        return -(l + 1);
 
         // 另外有binarySearch2的略微改动版本, r的初始化大了1，避免单个元素出错。
         // 注意由于mid的范围[l, r)，因此出现array[mid] < num的时候，l必须+1，否则可能出现死循环
